@@ -208,6 +208,7 @@ const Form: React.FC<Props> = ({
       caption,
       condition,
       required,
+      helpText,
       requiredErrorMessage,
       settings,
       type,
@@ -222,6 +223,7 @@ const Form: React.FC<Props> = ({
     return (
       <Field
         caption={caption}
+        helpText={helpText}
         condition={condition}
         key={alias}
         alias={alias}

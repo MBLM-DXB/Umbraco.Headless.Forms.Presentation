@@ -15,7 +15,7 @@ const TitleAndDescription: React.FC<Props> = ({ caption, bodyText }) => {
   return (
     <div className={className} style={styles}>
       {caption && <h1>{caption}</h1>}
-      {bodyText && <p>{bodyText}</p>}
+      {bodyText && <p dangerouslySetInnerHTML={{ __html: bodyText }}/>}
     </div>
   )
 }

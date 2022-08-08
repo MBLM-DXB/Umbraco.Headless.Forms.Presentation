@@ -284,7 +284,7 @@ const Form: React.FC<Props> = ({
                   Next
                 </button>
               )}
-              {form.pages.length - 1 === currentPage && <button>Submit</button>}
+              {form.pages.length - 1 === currentPage && <button>{form.submitLabel}</button>}
             </form>
           </ThemeContext.Provider>
         </FormContext.Provider>

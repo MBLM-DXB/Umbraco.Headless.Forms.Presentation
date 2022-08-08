@@ -23,7 +23,7 @@ const Select: React.FC<Props> = ({
 }) => {
   //const ref = useRef<HTMLSelectElement>(null)
   const { currentValue, error, registerField } = useField(alias)
-
+  helpText = helpText || "Please select a value";
   const ref = useCallback(
     node => {
       registerField({
@@ -65,7 +65,7 @@ const Select: React.FC<Props> = ({
         ref={ref}
         required={required}
       >
-        <option>Please select a value</option>
+        <option>{helpText}</option>
         {renderOptions(preValues)}
       </select>
       {error && <span>{error}</span>}

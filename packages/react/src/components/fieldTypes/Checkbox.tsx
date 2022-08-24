@@ -32,6 +32,7 @@ const Checkbox: React.FC<Props> = ({
       helpText={helpText}
       required={required}
       condition={condition}
+      className="checkbox-container"
     >
       <input
         type="checkbox"

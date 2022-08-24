@@ -57,6 +57,7 @@ const Select: React.FC<Props> = ({
       condition={condition}
       helpText={helpText}
       required={required}
+      className="select-container"
     >
       <select
         name={alias}

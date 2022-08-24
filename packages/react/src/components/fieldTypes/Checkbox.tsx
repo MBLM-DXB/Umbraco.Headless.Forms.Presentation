@@ -32,20 +32,22 @@ const Checkbox: React.FC<Props> = ({
       helpText={helpText}
       required={required}
       condition={condition}
-      className="checkbox-container"
+      
     >
-      <input
-        type="checkbox"
-        name={alias}
-        id={alias}
-        defaultChecked={currentValue === 'true' || currentValue === 'on'}
-        required={required}
-        onChange={evt =>
-          onValueChange(alias, evt.currentTarget.checked ? 'true' : null)
-        }
-      />
-      {label && <label htmlFor={alias}>{label}</label>}
-      {error && <span>{error}</span>}
+      <div className="checkbox-container">
+        <input
+          type="checkbox"
+          name={alias}
+          id={alias}
+          defaultChecked={currentValue === 'true' || currentValue === 'on'}
+          required={required}
+          onChange={evt =>
+            onValueChange(alias, evt.currentTarget.checked ? 'true' : null)
+          }
+        />
+        {label && <label htmlFor={alias}>{label}</label>}
+        {error && <span>{error}</span>}
+        </div>
     </FieldGroup>
   )
 }

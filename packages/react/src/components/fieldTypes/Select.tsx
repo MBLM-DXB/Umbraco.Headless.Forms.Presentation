@@ -57,8 +57,8 @@ const Select: React.FC<Props> = ({
       condition={condition}
       helpText={helpText}
       required={required}
-      className="select-container"
     >
+      <div className="select-container"></div>
       <select
         name={alias}
         id={alias}
@@ -70,6 +70,7 @@ const Select: React.FC<Props> = ({
         {renderOptions(preValues)}
       </select>
       {error && <span>{error}</span>}
+      </div>
     </FieldGroup>
   )
 }

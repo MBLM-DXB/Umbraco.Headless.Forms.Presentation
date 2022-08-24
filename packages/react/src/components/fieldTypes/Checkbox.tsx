@@ -47,7 +47,7 @@ const Checkbox: React.FC<Props> = ({
         />
         {label && <label htmlFor={alias}>{label}</label>}
         {error && <span>{error}</span>}
-        </div>
+      </div>
     </FieldGroup>
   )
 }

@@ -58,18 +58,18 @@ const Select: React.FC<Props> = ({
       helpText={helpText}
       required={required}
     >
-      <div className="select-container"></div>
-      <select
-        name={alias}
-        id={alias}
-        defaultValue={currentValue as string}
-        ref={ref}
-        required={required}
-      >
-        <option>{helpText}</option>
-        {renderOptions(preValues)}
-      </select>
-      {error && <span>{error}</span>}
+      <div className="select-container">
+        <select
+          name={alias}
+          id={alias}
+          defaultValue={currentValue as string}
+          ref={ref}
+          required={required}
+        >
+          <option>{helpText}</option>
+          {renderOptions(preValues)}
+        </select>
+        {error && <span>{error}</span>}
       </div>
     </FieldGroup>
   )

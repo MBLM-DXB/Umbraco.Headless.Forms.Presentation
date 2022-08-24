@@ -34,8 +34,8 @@ const Checkbox: React.FC<Props> = ({
       condition={condition}
       
     >
-      <div className="checkbox-container">
         <input
+          className="checkbox"
           type="checkbox"
           name={alias}
           id={alias}
@@ -47,7 +47,6 @@ const Checkbox: React.FC<Props> = ({
         />
         {label && <label htmlFor={alias}>{label}</label>}
         {error && <span>{error}</span>}
-      </div>
     </FieldGroup>
   )
 }

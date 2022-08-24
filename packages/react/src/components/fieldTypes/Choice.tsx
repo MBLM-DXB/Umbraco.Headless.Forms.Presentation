@@ -87,8 +87,10 @@ const Choice: React.FC<Props> = ({
       required={required || false}
       condition={condition}
     >
+    <div className="checkbox-container">
       {renderOptions(preValues)}
       {error && <span>{error}</span>}
+    </div>
     </FieldGroup>
   )
 }

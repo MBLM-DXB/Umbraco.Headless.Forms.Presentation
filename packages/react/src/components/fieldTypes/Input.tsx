@@ -56,6 +56,7 @@ const Input: React.FC<Props> = ({
         placeholder={placeholder}
         pattern={pattern}
         required={required}
+        className={currentValue ? 'has-value' : ''}
       />
       {error && <span>{error}</span>}
     </>

@@ -1,6 +1,7 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
 import useCondition from '../hooks/useCondition'
+import useField from '../hooks/useField'
 import useTheme from '../hooks/useTheme'
 import FormContext from '../providers/FormContext'
 import ThemeContext from '../providers/ThemeContext'
@@ -28,6 +29,13 @@ const FieldGroup: React.FC<Props> = ({
   } = useContext(FormContext)
   const [className, styles] = useTheme(theme, 'fieldGroup')
   const isVisible = useCondition(condition)
+  const currValue = useField(alias).currentValue;
+  const [hasValue, setHasValue] = useState(false)
+
+  useEffect(() => {
+    if (currValue) setHasValue(true)
+    else setHasValue(false)
+  }, [currValue])
 
   const showIndicator = () => {
     switch (fieldIndicationType) {
@@ -43,7 +51,9 @@ const FieldGroup: React.FC<Props> = ({
     <>
       {isVisible && (
         <div className={className} style={styles}>
-          <label htmlFor={alias}>
+          <label htmlFor={alias}
+          className={hasValue ? 'has-value' : ''}
+          >
             {caption}
             {showIndicator() && indicator}
           </label>

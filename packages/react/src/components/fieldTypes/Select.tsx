@@ -65,7 +65,6 @@ const Select: React.FC<Props> = ({
           defaultValue={currentValue as string}
           ref={ref}
           required={required}
-          className={currentValue ? 'has-value' : ''}
         >
           <option>{helpText}</option>
           {renderOptions(preValues)}

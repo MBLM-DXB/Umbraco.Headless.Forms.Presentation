@@ -41,7 +41,6 @@ const Textarea: React.FC<Props> = ({
         placeholder={placeholder}
         required={required}
         ref={ref}
-        className={currentValue ? 'has-value' : ''}
       />
 
       {error && <span>{error}</span>}

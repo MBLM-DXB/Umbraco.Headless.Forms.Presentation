@@ -41,7 +41,7 @@ const fieldTypes: TypeMap = {
   hidden: props => <Input type="hidden" {...props} />,
   password: props => <InputWithLabel type="password" {...props} />,
   recaptcha2: Recaptcha2,
-  radio: props => <Choice multiple={true} {...props} />,
+  radio: props => <Choice {...props} />,
   select: Select,
   text: props => <InputWithLabel type="text" {...props} />,
   textarea: Textarea,

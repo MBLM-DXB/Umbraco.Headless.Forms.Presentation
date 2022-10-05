@@ -120,6 +120,7 @@ export interface FormContext {
   registerField: (field: Field) => void
   unregisterField: (name: string) => void
   onValueChange: (alias: string, value?: FieldValue) => void
+  isArabic: boolean
 }
 
 export interface Theme {

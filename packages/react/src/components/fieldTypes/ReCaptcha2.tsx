@@ -34,8 +34,10 @@ const ReCaptcha2: React.FC<Props> = ({
 
   useEffect(() => {
     const script = document.createElement('script')
+    const defaultUrl = 'https://www.google.com/recaptcha/api.js?render=explicit'
+    const arabicUrl = 'https://www.google.com/recaptcha/api.js?render=explicit&hl=ar'
 
-    script.src = 'https://www.google.com/recaptcha/api.js?render=explicit'
+    script.src = formContext.isArabic ? arabicUrl : defaultUrl;
     script.async = true
     script.defer = true
 

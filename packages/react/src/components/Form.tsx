@@ -24,6 +24,7 @@ interface Props {
   recaptchaPublicKey?: string
   theme?: types.Theme
   onSubmit: (data: types.FormData) => void
+  isArabic?: boolean
 }
 
 interface TypeMap {
@@ -54,6 +55,7 @@ const Form: React.FC<Props> = ({
   recaptchaPublicKey,
   theme = defaultTheme,
   onSubmit,
+  isArabic = false,
 }) => {
   const formFields = form.pages
     .reduce((prev, cur) => {
@@ -246,6 +248,7 @@ const Form: React.FC<Props> = ({
             unregisterField,
             onValueChange: handleValueChange,
             recaptchaPublicKey,
+            isArabic,
           }}
         >
           <ThemeContext.Provider value={theme}>

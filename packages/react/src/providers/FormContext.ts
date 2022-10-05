@@ -15,6 +15,7 @@ const Context = createContext<FormContext>({
   onValueChange: () => {
     return
   },
+  isArabic: false,
 })
 
 Context.displayName = 'FormContext'

@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react'
+import Select, { SingleValue } from 'react-select'
 
 import useField from '../../hooks/useField'
 import { FieldProps } from '../../types'
@@ -13,7 +14,7 @@ type Props = JSX.IntrinsicElements['select'] &
     preValues: []
   }
 
-const Select: React.FC<Props> = ({
+const FormSelecSelect: React.FC<Props> = ({
   alias,
   caption,
   condition,
@@ -21,9 +22,9 @@ const Select: React.FC<Props> = ({
   preValues,
   required,
 }) => {
-  //const ref = useRef<HTMLSelectElement>(null)
+  // const ref = React.useRef<HTMLSelectElement>(null)
   const { currentValue, error, registerField } = useField(alias)
-  helpText = helpText || "Please select a value";
+  helpText = helpText || 'Please select a value'
   const ref = useCallback(
     node => {
       registerField({
@@ -34,20 +35,15 @@ const Select: React.FC<Props> = ({
     [alias, registerField],
   )
 
-  const renderOption = (value: string, name: string) => {
-    return (
-      <option key={value} value={value}>
-        {name}
-      </option>
-    )
-  }
+  const [isOpen, setIsOpen] = React.useState(false)
 
-  const renderOptions = (values: object | []) => {
-    if (values instanceof Array) return values.map(x => renderOption(x, x))
-
-    const kv = values as KeyValue
-
-    return Object.keys(values).map(x => renderOption(x, kv[x]))
+  const handleOptionsList = (list: object | []) => {
+    if (list instanceof Array) {
+      return list.map((item: string) => ({
+        label: item,
+        value: item,
+      }))
+    }
   }
 
   return (
@@ -59,22 +55,22 @@ const Select: React.FC<Props> = ({
       required={required}
     >
       <div className="select-container">
-        <select
-          name={alias}
+        <Select
+          placeholder={helpText}
           id={alias}
-          defaultValue={currentValue as string}
-          ref={ref}
-          required={required}
-        >
-          <option>{helpText}</option>
-          {renderOptions(preValues)}
-        </select>
+          classNamePrefix="dropdown"
+          onMenuOpen={() => setIsOpen(true)}
+          onMenuClose={() => setIsOpen(false)}
+          defaultInputValue={currentValue as string}
+          options={handleOptionsList(preValues)}
+          itemRef={ref}
+        />
         {error && <span>{error}</span>}
       </div>
     </FieldGroup>
   )
 }
 
-Select.displayName = 'Select'
+FormSelecSelect.displayName = 'Select'
 
-export default Select
+export default FormSelecSelect

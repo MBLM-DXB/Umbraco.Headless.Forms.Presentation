@@ -122,18 +122,53 @@ const Datepicker: React.FC<Props> = ({
     },
   };
 
+  const node = React.useRef(null)
+
+  React.useEffect(() => {
+    if (node) {
+      node.current.setAttribute("value", placeholderText);
+      node.current.dispatchEvent(new Event("change", { bubbles: true }));
+
+      registerField({
+        name: alias,
+        ref: node.current,
+        validate: value => {
+        const errors: string[] = []
+
+        if (
+          value &&
+          pattern &&
+          typeof value === 'string' &&
+          !value.match(pattern)
+          ) {
+            errors.push(
+              patternInvalidErrorMessage ||
+              `Please match the requested format: ${pattern}`,
+              )
+            }
+
+            return errors
+          },
+        })
+      }
+  }, [placeholderText])
+
   return (
     <>
+          <input
+        type="text"
+        name={alias}
+        id={alias}
+        ref={node}
+        defaultValue={placeholderText}
+        placeholder={placeholder}
+        pattern={pattern}
+        required={required}
+        style={{ visibility: 'hidden', height: 0, width: 0, position: 'absolute', zIndex: -1 }}
+      />
       <div className="react-datepicker__wrapper">
         <ReactDatePicker
           {...settings}
-          name={alias}
-          id={alias}
-          ref={ref}
-          defaultValue={currentValue as string}
-          placeholder={placeholder}
-          pattern={pattern}
-          required={required}
         />
       </div>
       {error && <span>{error}</span>}

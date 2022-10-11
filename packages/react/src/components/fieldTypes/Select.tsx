@@ -9,9 +9,13 @@ interface KeyValue {
   [key: string]: string
 }
 
-type Props = JSX.IntrinsicElements['select'] &
+type Props = JSX.IntrinsicElements['input'] &
   FieldProps & {
     preValues: []
+  } & {
+    alias: string
+    requiredErrorMessage?: string
+    patternInvalidErrorMessage?: string
   }
 
 const FormSelecSelect: React.FC<Props> = ({
@@ -21,19 +25,49 @@ const FormSelecSelect: React.FC<Props> = ({
   helpText,
   preValues,
   required,
+  placeholder,
+  pattern,
+  patternInvalidErrorMessage,
+  type,
+  ...props
 }) => {
-  // const ref = React.useRef<HTMLSelectElement>(null)
   const { currentValue, error, registerField } = useField(alias)
   helpText = helpText || 'Please select a value'
-  const ref = useCallback(
-    node => {
+
+  const node = React.useRef(null)
+  const [currValue, setCurrValue] = React.useState('')
+
+
+  React.useEffect(() => {
+    if (node) {
+      node.current.setAttribute("value", currValue);
+      node.current.dispatchEvent(new Event("change", { bubbles: true }));
+
       registerField({
         name: alias,
-        ref: node,
-      })
-    },
-    [alias, registerField],
-  )
+        ref: node.current,
+        validate: value => {
+        const errors: string[] = []
+
+        if (
+          value &&
+          pattern &&
+          typeof value === 'string' &&
+          !value.match(pattern)
+          ) {
+            errors.push(
+              patternInvalidErrorMessage ||
+              `Please match the requested format: ${pattern}`,
+              )
+            }
+
+            return errors
+          },
+        })
+      }
+  }, [currValue])
+
+
 
   const [isOpen, setIsOpen] = React.useState(false)
 
@@ -44,8 +78,11 @@ const FormSelecSelect: React.FC<Props> = ({
         value: item,
       }))
     }
+    return Object.values(list).map((item: string) => ({
+      label: item,
+      value: item,
+    }))
   }
-
   return (
     <FieldGroup
       alias={alias}
@@ -55,15 +92,25 @@ const FormSelecSelect: React.FC<Props> = ({
       required={required}
     >
       <div className="select-container">
+      <input
+        type={type}
+        name={alias}
+        id={alias}
+        ref={node}
+        required={required}
+        defaultValue={currValue}
+        pattern={pattern}
+        style={{ visibility: 'hidden', height: 0, width: 0, position: 'absolute', zIndex: -1 }}
+      />
         <Select
           placeholder={helpText}
-          id={alias}
           classNamePrefix="dropdown"
           onMenuOpen={() => setIsOpen(true)}
           onMenuClose={() => setIsOpen(false)}
-          defaultInputValue={currentValue as string}
+          onChange={(value: SingleValue<{ label: string; value: string }>) => {
+            setCurrValue(value?.label || '')
+          }}
           options={handleOptionsList(preValues)}
-          itemRef={ref}
         />
         {error && <span>{error}</span>}
       </div>

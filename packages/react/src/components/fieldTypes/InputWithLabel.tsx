@@ -3,6 +3,7 @@ import React from 'react'
 import { FieldProps } from '../../types'
 import FieldGroup from '../FieldGroup'
 
+import Datepicker from './Datepicker'
 import Input from './Input'
 
 type Props = JSX.IntrinsicElements['input'] &
@@ -18,6 +19,19 @@ const InputWithLabel: React.FC<Props> = ({
   required,
   ...props
 }) => {
+  if (props.type === 'date') {
+    return (
+      <FieldGroup
+        alias={alias}
+        caption={caption}
+        condition={condition}
+        helpText={helpText}
+        required={required}
+      >
+        <Datepicker alias={alias} required={required} {...props} />
+      </FieldGroup>
+    )
+  }
   return (
     <FieldGroup
       alias={alias}

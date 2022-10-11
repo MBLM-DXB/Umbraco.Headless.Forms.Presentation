@@ -46,21 +46,6 @@ const Datepicker: React.FC<Props> = ({
     [alias, pattern, patternInvalidErrorMessage, registerField],
   )
 
-  const months = {
-    1: 'january',
-    2: 'february',
-    3: 'march',
-    4: 'april',
-    5: 'may',
-    6: 'june',
-    7: 'july',
-    8: 'august',
-    9: 'september',
-    10: 'october',
-    11: 'november',
-    12: 'december',
-  };
-
   const datesCompare = (date) => {
     const currDate = new Date();
 
@@ -76,6 +61,17 @@ const Datepicker: React.FC<Props> = ({
       date.getDate(),
     );
 
+    const currMonth = Date.UTC(
+      currDate.getFullYear(),
+      currDate.getMonth() + 1,
+    )
+    const comparedMonth = Date.UTC(
+      date.getFullYear(),
+      date.getMonth() + 1,
+    )
+
+    if (currMonth < comparedMonth) return 2;
+    if (currMonth > comparedMonth) return -2;
     if (+curr < +compared) return 1;
     if (+curr === +compared) return 0;
     if (+curr > +compared) return -1;
@@ -91,36 +87,35 @@ const Datepicker: React.FC<Props> = ({
   };
 
   const [selectedDate, setSelectedDate] = React.useState(new Date());
-  const [placeholderText, setPlaceholderText] = React.useState(getDateText(selectedDate));
+  const [placeholderText, setPlaceholderText] = React.useState(placeholder);
   const [isOpen, setIsOpen] = React.useState(false);
-
 
   const settings = {
     placeholderText,
     useWeekdaysShort: true,
     className: 'react-datepicker__input',
     isOpen,
+    fixedHeight: true,
     openToDate: selectedDate,
-    onCalendarOpen: () => {
-      setIsOpen(true);
-      setPlaceholderText('select date');
-    },
+    onCalendarOpen: () => setIsOpen(true),
     onCalendarClose: () => {
       setIsOpen(false);
       setPlaceholderText(getDateText(selectedDate));
     },
-    onChange: (date) => {
-      setSelectedDate(date);
-    },
+    onChange: (date) => setSelectedDate(date),
     formatWeekDay: (format) => format.slice(0, 2),
     dayClassName: (date) => {
       switch (datesCompare(date)) {
+        case -2:
+          return 'react-datepicker__day--prev-month';
         case -1:
           return 'react-datepicker__day--prev-day';
         case 0:
           return 'react-datepicker__day--curr-day';
         case 1:
           return 'react-datepicker__day--next-day';
+          case 2:
+            return 'react-datepicker__day--next-month';
         default:
           return null;
       }

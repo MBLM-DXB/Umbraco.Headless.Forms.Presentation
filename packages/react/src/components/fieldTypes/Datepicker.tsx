@@ -18,33 +18,10 @@ const Datepicker: React.FC<Props> = ({
   type,
 }) => {
   const { currentValue, error, registerField } = useField(alias)
-
-  const ref = useCallback(
-    node => {
-      registerField({
-        name: alias,
-        ref: node,
-        validate: value => {
-          const errors: string[] = []
-
-          if (
-            value &&
-            pattern &&
-            typeof value === 'string' &&
-            !value.match(pattern)
-          ) {
-            errors.push(
-              patternInvalidErrorMessage ||
-                `Please match the requested format: ${pattern}`,
-            )
-          }
-
-          return errors
-        },
-      })
-    },
-    [alias, pattern, patternInvalidErrorMessage, registerField],
-  )
+  const [selectedDate, setSelectedDate] = React.useState(new Date())
+  const [placeholderText, setPlaceholderText] = React.useState(placeholder)
+  const [isOpen, setIsOpen] = React.useState(false)
+  const node = React.useRef(null)
 
   const datesCompare = (date) => {
     const currDate = new Date();
@@ -86,10 +63,6 @@ const Datepicker: React.FC<Props> = ({
     return `${day}/${month}/${year}`;
   };
 
-  const [selectedDate, setSelectedDate] = React.useState(new Date());
-  const [placeholderText, setPlaceholderText] = React.useState(placeholder);
-  const [isOpen, setIsOpen] = React.useState(false);
-
   const settings = {
     placeholderText,
     useWeekdaysShort: true,
@@ -99,9 +72,10 @@ const Datepicker: React.FC<Props> = ({
     openToDate: selectedDate,
     onCalendarOpen: () => setIsOpen(true),
     onCalendarClose: () => {
-      setIsOpen(false);
-      setPlaceholderText(getDateText(selectedDate));
+      setIsOpen(false)
+      setPlaceholderText(getDateText(selectedDate))
     },
+    onSelect: (date) => setSelectedDate(date),
     onChange: (date) => setSelectedDate(date),
     formatWeekDay: (format) => format.slice(0, 2),
     dayClassName: (date) => {
@@ -122,12 +96,10 @@ const Datepicker: React.FC<Props> = ({
     },
   };
 
-  const node = React.useRef(null)
-
   React.useEffect(() => {
     if (node) {
-      node.current.setAttribute("value", placeholderText);
-      node.current.dispatchEvent(new Event("change", { bubbles: true }));
+      node.current.setAttribute("value", getDateText(selectedDate))
+      node.current.dispatchEvent(new Event("change", { bubbles: true }))
 
       registerField({
         name: alias,
@@ -151,19 +123,18 @@ const Datepicker: React.FC<Props> = ({
           },
         })
       }
-  }, [placeholderText])
+  }, [selectedDate])
 
   return (
     <>
-          <input
+      <input
         type="text"
         name={alias}
         id={alias}
         ref={node}
-        defaultValue={placeholderText}
-        placeholder={placeholder}
-        pattern={pattern}
         required={required}
+        defaultValue={currentValue as string}
+        pattern={pattern}
         style={{ visibility: 'hidden', height: 0, width: 0, position: 'absolute', zIndex: -1 }}
       />
       <div className="react-datepicker__wrapper">

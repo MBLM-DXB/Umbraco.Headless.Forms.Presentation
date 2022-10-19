@@ -1,6 +1,6 @@
 {
   "name": "@umbraco/headless-forms-react",
-  "version": "0.1.12",
+  "version": "0.1.13",
   "description": "Umbraco Forms React Components for Umbraco Heartcore",
   "license": "MIT",
   "repository": {

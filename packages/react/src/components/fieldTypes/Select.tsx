@@ -85,7 +85,9 @@ const FormSelecSelect: React.FC<Props> = ({
   }
 
   const handleSelectChange = (value: SingleValue<KeyValue>) => {
-    setCurrValue(Object.values(preValues).indexOf(value))
+    if (typeof preValues === 'object' && Array.isArray(preValues) === false) {
+      setCurrValue(Object.values(preValues).indexOf(value))
+    } else setCurrValue(value)
   }
 
   return (

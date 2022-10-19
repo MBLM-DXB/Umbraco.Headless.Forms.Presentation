@@ -83,6 +83,11 @@ const FormSelecSelect: React.FC<Props> = ({
       value: item,
     }))
   }
+
+  const handleSelectChange = (value: SingleValue<KeyValue>) => {
+    setCurrValue(Object.values(preValues).indexOf(value))
+  }
+
   return (
     <FieldGroup
       alias={alias}
@@ -108,7 +113,7 @@ const FormSelecSelect: React.FC<Props> = ({
           onMenuOpen={() => setIsOpen(true)}
           onMenuClose={() => setIsOpen(false)}
           onChange={(value: SingleValue<{ label: string; value: string }>) => {
-            setCurrValue(value?.label || '')
+            handleSelectChange(value?.label)
           }}
           options={handleOptionsList(preValues)}
         />

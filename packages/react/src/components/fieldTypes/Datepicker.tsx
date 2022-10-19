@@ -63,6 +63,11 @@ const Datepicker: React.FC<Props> = ({
     return `${day}/${month}/${year}`;
   };
 
+  const handleDateValue = (date) => {
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
+    return date.toLocaleDateString('en-US', options)
+  }
+
   const settings = {
     placeholderText,
     useWeekdaysShort: true,
@@ -98,7 +103,7 @@ const Datepicker: React.FC<Props> = ({
 
   React.useEffect(() => {
     if (node) {
-      node.current.setAttribute("value", getDateText(selectedDate))
+      node.current.setAttribute("value", handleDateValue(selectedDate))
       node.current.dispatchEvent(new Event("change", { bubbles: true }))
 
       registerField({

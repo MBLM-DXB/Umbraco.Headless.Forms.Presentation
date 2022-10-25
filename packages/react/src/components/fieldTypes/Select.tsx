@@ -1,5 +1,4 @@
 import React, { useCallback } from 'react'
-import Select, { SingleValue } from 'react-select'
 
 import useField from '../../hooks/useField'
 import { FieldProps } from '../../types'
@@ -9,85 +8,46 @@ interface KeyValue {
   [key: string]: string
 }
 
-type Props = JSX.IntrinsicElements['input'] &
+type Props = JSX.IntrinsicElements['select'] &
   FieldProps & {
     preValues: []
-  } & {
-    alias: string
-    requiredErrorMessage?: string
-    patternInvalidErrorMessage?: string
   }
 
-const FormSelecSelect: React.FC<Props> = ({
+const Select: React.FC<Props> = ({
   alias,
   caption,
   condition,
   helpText,
   preValues,
   required,
-  placeholder,
-  pattern,
-  patternInvalidErrorMessage,
-  type,
-  ...props
 }) => {
+  //const ref = useRef<HTMLSelectElement>(null)
   const { currentValue, error, registerField } = useField(alias)
-  helpText = helpText || 'Please select a value'
-
-  const node = React.useRef(null)
-  const [currValue, setCurrValue] = React.useState('')
-
-
-  React.useEffect(() => {
-    if (node) {
-      node.current.setAttribute("value", currValue);
-      node.current.dispatchEvent(new Event("change", { bubbles: true }));
-
+  helpText = helpText || "Please select a value";
+  const ref = useCallback(
+    node => {
       registerField({
         name: alias,
-        ref: node.current,
-        validate: value => {
-        const errors: string[] = []
+        ref: node,
+      })
+    },
+    [alias, registerField],
+  )
 
-        if (
-          value &&
-          pattern &&
-          typeof value === 'string' &&
-          !value.match(pattern)
-          ) {
-            errors.push(
-              patternInvalidErrorMessage ||
-              `Please match the requested format: ${pattern}`,
-              )
-            }
-
-            return errors
-          },
-        })
-      }
-  }, [currValue])
-
-
-
-  const [isOpen, setIsOpen] = React.useState(false)
-
-  const handleOptionsList = (list: object | []) => {
-    if (list instanceof Array) {
-      return list.map((item: string) => ({
-        label: item,
-        value: item,
-      }))
-    }
-    return Object.values(list).map((item: string) => ({
-      label: item,
-      value: item,
-    }))
+  const renderOption = (value: string, name: string) => {
+    return (
+      <option key={value} value={value}>
+        {name}
+      </option>
+    )
   }
 
-  const handleSelectChange = (value: SingleValue<KeyValue>) => {
-    if (typeof preValues === 'object' && Array.isArray(preValues) === false) {
-      setCurrValue(Object.values(preValues).indexOf(value))
-    } else setCurrValue(value)
+  const renderOptions = (values: object | []) => {
+    if (values instanceof Array) return values.map(x => renderOption(x, x))
+
+    const kv = values as KeyValue
+
+    return Object.keys(values).map(x => renderOption(x, kv[x]))
   }
 
   return (
@@ -99,32 +59,22 @@ const FormSelecSelect: React.FC<Props> = ({
       required={required}
     >
       <div className="select-container">
-      <input
-        type={type}
-        name={alias}
-        id={alias}
-        ref={node}
-        required={required}
-        defaultValue={currValue}
-        pattern={pattern}
-        style={{ visibility: 'hidden', height: 0, width: 0, position: 'absolute', zIndex: -1 }}
-      />
-        <Select
-          placeholder={helpText}
-          classNamePrefix="dropdown"
-          onMenuOpen={() => setIsOpen(true)}
-          onMenuClose={() => setIsOpen(false)}
-          onChange={(value: SingleValue<{ label: string; value: string }>) => {
-            handleSelectChange(value?.label)
-          }}
-          options={handleOptionsList(preValues)}
-        />
+        <select
+          name={alias}
+          id={alias}
+          defaultValue={currentValue as string}
+          ref={ref}
+          required={required}
+        >
+          <option>{helpText}</option>
+          {renderOptions(preValues)}
+        </select>
         {error && <span>{error}</span>}
       </div>
     </FieldGroup>
   )
 }
 
-FormSelecSelect.displayName = 'Select'
+Select.displayName = 'Select'
 
-export default FormSelecSelect
+export default Select

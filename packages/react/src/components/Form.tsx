@@ -259,7 +259,7 @@ const Form: React.FC<Props> = ({
               className={className}
               style={styles}
               noValidate={true}
-              dataStaticFormName={formName}
+              data-static-form-name={formName}
             >
               {form.pages.map(
                 (p, i) =>

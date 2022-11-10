@@ -56,6 +56,7 @@ const Form: React.FC<Props> = ({
   theme = defaultTheme,
   onSubmit,
   isArabic = false,
+  formName="",
 }) => {
   const formFields = form.pages
     .reduce((prev, cur) => {
@@ -258,6 +259,7 @@ const Form: React.FC<Props> = ({
               className={className}
               style={styles}
               noValidate={true}
+              dataStaticFormName={formName}
             >
               {form.pages.map(
                 (p, i) =>

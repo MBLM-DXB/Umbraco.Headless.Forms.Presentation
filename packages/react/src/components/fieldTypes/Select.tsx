@@ -107,6 +107,7 @@ const FormSelecSelect: React.FC<Props> = ({
         required={required}
         defaultValue={currValue}
         pattern={pattern}
+        aria-label={Object.values(preValues)[currValue]}
         style={{ visibility: 'hidden', height: 0, width: 0, position: 'absolute', zIndex: -1 }}
       />
         <Select

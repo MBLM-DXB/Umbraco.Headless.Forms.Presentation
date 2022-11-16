@@ -43,6 +43,8 @@ const Select: React.FC<Props> = ({
   }
 
   const renderOptions = (values: object | []) => {
+    // console.log(values);
+
     if (values instanceof Array) return values.map(x => renderOption(x, x))
 
     const kv = values as KeyValue
@@ -65,6 +67,7 @@ const Select: React.FC<Props> = ({
           defaultValue={currentValue as string}
           ref={ref}
           required={required}
+          aria-label={Object.values(preValues)[currentValue]}
         >
           <option>{helpText}</option>
           {renderOptions(preValues)}

@@ -58,7 +58,7 @@ const Datepicker: React.FC<Props> = ({
   const getDateText = (date) => {
     const year = date.getUTCFullYear();
     const month = date.getUTCMonth() + 1;
-    const day = date.getUTCDate();
+    const day = date.getUTCDate() + 1;
 
     return `${day}/${month}/${year}`;
   };

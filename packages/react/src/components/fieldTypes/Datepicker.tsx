@@ -81,7 +81,10 @@ const Datepicker: React.FC<Props> = ({
       setPlaceholderText(getDateText(selectedDate))
     },
     onSelect: (date) => setSelectedDate(date),
-    onChange: (date) => setSelectedDate(date),
+    // onChange: (date) => setSelectedDate(date),
+    onChange: (date) =>{
+      onChange( adjustTimezone(date) )
+    } ,
     formatWeekDay: (format) => format.slice(0, 2),
     dayClassName: (date) => {
       switch (datesCompare(date)) {

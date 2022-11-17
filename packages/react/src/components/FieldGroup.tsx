@@ -47,10 +47,8 @@ const FieldGroup: React.FC<Props> = ({
         return false
     }
   }
-  return (
-    <>
-      {isVisible && (
-        <div className={className} style={styles}>
+  return isVisible && (
+        <div id={alias + '-wrapper'} className={className} style={styles}>
           <label htmlFor={alias}
           className={hasValue ? 'has-value' : ''}
           >
@@ -59,9 +57,7 @@ const FieldGroup: React.FC<Props> = ({
           </label>
           {children}
         </div>
-      )}
-    </>
-  )
+      )
 }
 
 FieldGroup.displayName = 'FieldGroup'

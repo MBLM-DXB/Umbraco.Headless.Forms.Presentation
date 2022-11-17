@@ -1,5 +1,5 @@
-import React, {useState, useCallback } from 'react'
-import DatePicker from "react-datepicker";
+import React, { useCallback } from 'react'
+import ReactDatePicker from 'react-datepicker';
 
 import useField from '../../hooks/useField'
 
@@ -18,7 +18,7 @@ const Datepicker: React.FC<Props> = ({
   type,
 }) => {
   const { currentValue, error, registerField } = useField(alias)
-  const [startDate, setStartDate] = useState(new Date());  
+  const [selectedDate, setSelectedDate] = React.useState(new Date())
   const [placeholderText, setPlaceholderText] = React.useState(placeholder)
   const [isOpen, setIsOpen] = React.useState(false)
   const node = React.useRef(null)
@@ -29,7 +29,7 @@ const Datepicker: React.FC<Props> = ({
     const curr = Date.UTC(
       currDate.getFullYear(),
       currDate.getMonth() + 1,
-      currDate.getDate() + 1,
+      currDate.getDate(),
     );
 
     const compared = Date.UTC(
@@ -68,43 +68,42 @@ const Datepicker: React.FC<Props> = ({
     return date.toLocaleDateString('en-US', options)
   }
 
-  // const settings = {
-  //   placeholderText,
-  //   dateFormat:"dd/MM/yyyy",
-  //   useWeekdaysShort: true,
-  //   className: 'react-datepicker__input',
-  //   isOpen,
-  //   fixedHeight: true,
-  //   openToDate: selectedDate,
-  //   onCalendarOpen: () => setIsOpen(true),
-  //   onCalendarClose: () => {
-  //     setIsOpen(false)
-  //     setPlaceholderText(getDateText(selectedDate))
-  //   },
-  //   selected:{selectedDate},
-  //   onChange: (date) => setSelectedDate(date),
-  //   formatWeekDay: (format) => format.slice(0, 2),
-  //   dayClassName: (date) => {
-  //     switch (datesCompare(date)) {
-  //       case -2:
-  //         return 'react-datepicker__day--prev-month';
-  //       case -1:
-  //         return 'react-datepicker__day--prev-day';
-  //       case 0:
-  //         return 'react-datepicker__day--curr-day';
-  //       case 1:
-  //         return 'react-datepicker__day--next-day';
-  //         case 2:
-  //           return 'react-datepicker__day--next-month';
-  //       default:
-  //         return null;
-  //     }
-  //   },
-  // };
+  const settings = {
+    placeholderText,
+    useWeekdaysShort: true,
+    className: 'react-datepicker__input',
+    isOpen,
+    fixedHeight: true,
+    openToDate: selectedDate,
+    onCalendarOpen: () => setIsOpen(true),
+    onCalendarClose: () => {
+      setIsOpen(false)
+      setPlaceholderText(getDateText(selectedDate))
+    },
+    onSelect: (date) => setSelectedDate(date),
+    onChange: (date) => setSelectedDate(date),
+    formatWeekDay: (format) => format.slice(0, 2),
+    dayClassName: (date) => {
+      switch (datesCompare(date)) {
+        case -2:
+          return 'react-datepicker__day--prev-month';
+        case -1:
+          return 'react-datepicker__day--prev-day';
+        case 0:
+          return 'react-datepicker__day--curr-day';
+        case 1:
+          return 'react-datepicker__day--next-day';
+          case 2:
+            return 'react-datepicker__day--next-month';
+        default:
+          return null;
+      }
+    },
+  };
 
   React.useEffect(() => {
     if (node) {
-      node.current.setAttribute("value", handleDateValue(startDate))
+      node.current.setAttribute("value", handleDateValue(selectedDate))
       node.current.dispatchEvent(new Event("change", { bubbles: true }))
 
       registerField({
@@ -129,7 +128,7 @@ const Datepicker: React.FC<Props> = ({
           },
         })
       }
-  }, [startDate])
+  }, [selectedDate])
 
   return (
     <>
@@ -143,12 +142,10 @@ const Datepicker: React.FC<Props> = ({
         pattern={pattern}
         style={{ visibility: 'hidden', height: 0, width: 0, position: 'absolute', zIndex: -1 }}
       />
-      <div className="react-datepicker__wrapper date_picker">
-        {/* <ReactDatePicker
+      <div className="react-datepicker__wrapper">
+        <ReactDatePicker
           {...settings}
-        /> */}
-
-        <DatePicker selected={startDate} onChange={(date) =>setStartDate(date)} />
+        />
       </div>
       {error && <span>{error}</span>}
     </>

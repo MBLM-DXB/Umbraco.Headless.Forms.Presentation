@@ -35,7 +35,7 @@ const Datepicker: React.FC<Props> = ({
     const compared = Date.UTC(
       date.getFullYear(),
       date.getMonth() + 1,
-      date.getDate() + 1,
+      date.getDate() - 1,
     );
 
     const currMonth = Date.UTC(
@@ -58,7 +58,7 @@ const Datepicker: React.FC<Props> = ({
   const getDateText = (date) => {
     const year = date.getUTCFullYear();
     const month = date.getUTCMonth() + 1;
-    const day = date.getUTCDate() + 1;
+    const day = date.getUTCDate() - 1;
 
     return `${day}/${month}/${year}`;
   };
@@ -70,6 +70,7 @@ const Datepicker: React.FC<Props> = ({
 
   const settings = {
     placeholderText,
+    dateFormat:"dd/MM/yyyy",
     useWeekdaysShort: true,
     className: 'react-datepicker__input',
     isOpen,
@@ -81,10 +82,7 @@ const Datepicker: React.FC<Props> = ({
       setPlaceholderText(getDateText(selectedDate))
     },
     onSelect: (date) => setSelectedDate(date),
-    // onChange: (date) => setSelectedDate(date),
-    onChange: (date) =>{
-      onChange( adjustTimezone(date) )
-    } ,
+    onChange: (date) => setSelectedDate(date),
     formatWeekDay: (format) => format.slice(0, 2),
     dayClassName: (date) => {
       switch (datesCompare(date)) {

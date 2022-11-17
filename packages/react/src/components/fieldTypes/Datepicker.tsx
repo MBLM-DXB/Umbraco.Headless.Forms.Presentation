@@ -35,7 +35,7 @@ const Datepicker: React.FC<Props> = ({
     const compared = Date.UTC(
       date.getFullYear(),
       date.getMonth() + 1,
-      date.getDate() - 1,
+      date.getDate(),
     );
 
     const currMonth = Date.UTC(
@@ -58,7 +58,7 @@ const Datepicker: React.FC<Props> = ({
   const getDateText = (date) => {
     const year = date.getUTCFullYear();
     const month = date.getUTCMonth() + 1;
-    const day = date.getUTCDate() - 1;
+    const day = date.getUTCDate();
 
     return `${day}/${month}/${year}`;
   };

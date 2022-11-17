@@ -24,41 +24,25 @@ const Datepicker: React.FC<Props> = ({
   const node = React.useRef(null)
 
   const datesCompare = (date) => {
+
     const currDate = new Date();
-
-    const curr = Date.UTC(
-      currDate.getFullYear(),
-      currDate.getMonth() + 1,
-      currDate.getDate(),
-    );
-
-    const compared = Date.UTC(
-      date.getFullYear(),
-      date.getMonth() + 1,
-      date.getDate(),
-    );
-
-    const currMonth = Date.UTC(
-      currDate.getFullYear(),
-      currDate.getMonth() + 1,
-    )
-    const comparedMonth = Date.UTC(
-      date.getFullYear(),
-      date.getMonth() + 1,
-    )
+    const curr = +`${currDate.getFullYear()}${currDate.getMonth() + 1}${currDate.getDate()}`
+    const compared = +`${date.getFullYear()}${date.getMonth() + 1}${date.getDate()}`
+    const currMonth = +`${currDate.getFullYear()}${currDate.getMonth() + 1}`;
+    const comparedMonth = +`${date.getFullYear()}${date.getMonth() + 1}`;
 
     if (currMonth < comparedMonth) return 2;
     if (currMonth > comparedMonth) return -2;
-    if (+curr < +compared) return 1;
-    if (+curr === +compared) return 0;
-    if (+curr > +compared) return -1;
+    if (curr < compared) return 1;
+    if (curr === compared) return 0;
+    if (curr > compared) return -1;
     return null;
   };
 
   const getDateText = (date) => {
-    const year = date.getUTCFullYear();
-    const month = date.getUTCMonth() + 1;
-    const day = date.getUTCDate();
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
 
     return `${day}/${month}/${year}`;
   };

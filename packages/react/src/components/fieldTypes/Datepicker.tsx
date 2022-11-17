@@ -1,5 +1,5 @@
-import React, { useCallback } from 'react'
-import DatePicker from 'react-datepicker';
+import React, {useState, useCallback } from 'react'
+import DatePicker from "react-datepicker";
 
 import useField from '../../hooks/useField'
 
@@ -18,7 +18,7 @@ const Datepicker: React.FC<Props> = ({
   type,
 }) => {
   const { currentValue, error, registerField } = useField(alias)
-  const [selectedDate, setSelectedDate] = React.useState(new Date())
+  const [startDate, setStartDate] = useState(new Date());  
   const [placeholderText, setPlaceholderText] = React.useState(placeholder)
   const [isOpen, setIsOpen] = React.useState(false)
   const node = React.useRef(null)
@@ -104,7 +104,7 @@ const Datepicker: React.FC<Props> = ({
 
   React.useEffect(() => {
     if (node) {
-      node.current.setAttribute("value", handleDateValue(selectedDate))
+      node.current.setAttribute("value", handleDateValue(startDate))
       node.current.dispatchEvent(new Event("change", { bubbles: true }))
 
       registerField({
@@ -129,7 +129,7 @@ const Datepicker: React.FC<Props> = ({
           },
         })
       }
-  }, [selectedDate])
+  }, [startDate])
 
   return (
     <>
@@ -148,11 +148,7 @@ const Datepicker: React.FC<Props> = ({
           {...settings}
         /> */}
 
-        <DatePicker
-          closeOnScroll={true}
-          selected={selectedDate}
-          onChange={(date) => setSelectedDate(date)}
-        />
+        <DatePicker selected={startDate} onChange={(date) =>setStartDate(date)} />
       </div>
       {error && <span>{error}</span>}
     </>

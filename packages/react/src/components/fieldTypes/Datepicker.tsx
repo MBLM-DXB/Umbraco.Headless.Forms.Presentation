@@ -29,13 +29,13 @@ const Datepicker: React.FC<Props> = ({
     const curr = Date.UTC(
       currDate.getFullYear(),
       currDate.getMonth() + 1,
-      currDate.getDate(),
+      currDate.getDate() + 1,
     );
 
     const compared = Date.UTC(
       date.getFullYear(),
       date.getMonth() + 1,
-      date.getDate(),
+      date.getDate() + 1,
     );
 
     const currMonth = Date.UTC(

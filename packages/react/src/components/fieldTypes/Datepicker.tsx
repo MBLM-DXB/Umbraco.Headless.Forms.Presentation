@@ -143,7 +143,7 @@ const Datepicker: React.FC<Props> = ({
         pattern={pattern}
         style={{ visibility: 'hidden', height: 0, width: 0, position: 'absolute', zIndex: -1 }}
       />
-      <div className="react-datepicker__wrapper">
+      <div className="react-datepicker__wrapper date_picker">
         {/* <ReactDatePicker
           {...settings}
         /> */}

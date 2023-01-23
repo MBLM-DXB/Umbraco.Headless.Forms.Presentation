@@ -39,6 +39,8 @@ const FormSelecSelect: React.FC<Props> = ({
 
 
   React.useEffect(() => {
+    // console.log('currentValue', currentValue);
+
     if (node) {
       node.current.setAttribute("value", currValue);
       node.current.dispatchEvent(new Event("change", { bubbles: true }));
@@ -85,9 +87,19 @@ const FormSelecSelect: React.FC<Props> = ({
   }
 
   const handleSelectChange = (value: SingleValue<KeyValue>) => {
-     if (typeof preValues === 'object' && Array.isArray(preValues) === false) {
-       setCurrValue(Object.values(preValues).indexOf(value))
-     } else setCurrValue(value)
+
+     if (typeof value === 'object' && Array.isArray(value)) {
+      if (typeof preValues === 'object' && Array.isArray(preValues) === false) {
+        const values = value.map((item: any) => Object.values(preValues).indexOf(item?.label))
+        setCurrValue(values)
+      } else {
+        const values = value.map((item: any) => item?.label)
+        setCurrValue(values)
+      }
+     }
+     else if (typeof preValues === 'object' && Array.isArray(preValues) === false) {
+       setCurrValue(Object.values(preValues).indexOf(value?.label))
+     } else setCurrValue(value?.label)
   }
 
   return (
@@ -112,13 +124,15 @@ const FormSelecSelect: React.FC<Props> = ({
       />
         <Select
           placeholder={helpText}
-          classNamePrefix="dropdown"
+          classNamePrefix={!props.allowMultipleSelections ? "dropdown" : "dropdown-multi"}
           onMenuOpen={() => setIsOpen(true)}
           onMenuClose={() => setIsOpen(false)}
           onChange={(value: SingleValue<{ label: string; value: string }>) => {
-            handleSelectChange(value?.label)
+            handleSelectChange(value)
           }}
           options={handleOptionsList(preValues)}
+          isMulti={!!props.allowMultipleSelections}
+          hideSelectedOptions={false}
         />
         {error && <span>{error}</span>}
       </div>

@@ -28,7 +28,6 @@ const FormSelecSelect: React.FC<Props> = ({
   placeholder,
   pattern,
   patternInvalidErrorMessage,
-  allowMultipleSelections,
   type,
   ...props
 }) => {
@@ -37,22 +36,14 @@ const FormSelecSelect: React.FC<Props> = ({
 
   const node = React.useRef(null)
   const [currValue, setCurrValue] = React.useState('')
+  const [multiValues, setMultiValues] = React.useState('')
 
 
   React.useEffect(() => {
-    console.log({  alias,
-      caption,
-      condition,
-      helpText,
-      preValues,
-      required,
-      placeholder,
-      pattern,
-      patternInvalidErrorMessage,
-      type, ...props});
+    // console.log('currentValue', currentValue);
 
     if (node) {
-      node.current.setAttribute("value", currValue);
+      node.current.setAttribute("value", currValue.toString());
       node.current.dispatchEvent(new Event("change", { bubbles: true }));
 
       registerField({
@@ -97,22 +88,24 @@ const FormSelecSelect: React.FC<Props> = ({
   }
 
   const handleSelectChange = (value: SingleValue<KeyValue>) => {
+    console.log('value', currValue);
 
-    if (allowMultipleSelections === "True") {
+
+    if (!!props.allowMultipleSelections) {
       if (typeof preValues === 'object' && Array.isArray(preValues) === false) {
         const values = value.map((item: any) => Object.values(preValues).indexOf(item?.label))
-        setCurrValue(values)
+        setCurrValue(values[0])
+        setMultiValues(values)
       } else {
         const values = value.map((item: any) => item?.label)
-        setCurrValue(values)
+        setCurrValue(values[0])
+        setMultiValues(values)
       }
     }
     else if (typeof preValues === 'object' && Array.isArray(preValues) === false) {
       setCurrValue(Object.values(preValues).indexOf(value?.label))
     } else setCurrValue(value?.label)
   }
-
-
 
   return (
     <FieldGroup
@@ -129,21 +122,21 @@ const FormSelecSelect: React.FC<Props> = ({
         id={alias}
         ref={node}
         required={required}
-        defaultValue={currValue}
+        defaultValue={currValue.toString()}
         pattern={pattern}
-        aria-label={Object.values(preValues)[currValue]}
+        aria-label={!props.allowMultipleSelections ? Object.values(preValues)[currValue] : multiValues.toString()}
         style={{ visibility: 'hidden', height: 0, width: 0, position: 'absolute', zIndex: -1 }}
       />
         <Select
           placeholder={helpText}
-          classNamePrefix={allowMultipleSelections === "True" ? "dropdown-multi" : 'dropdown'}
+          classNamePrefix={!props.allowMultipleSelections ? "dropdown" : "dropdown-multi"}
           onMenuOpen={() => setIsOpen(true)}
           onMenuClose={() => setIsOpen(false)}
           onChange={(value: SingleValue<{ label: string; value: string }>) => {
             handleSelectChange(value)
           }}
           options={handleOptionsList(preValues)}
-          isMulti={allowMultipleSelections === "True" }
+          isMulti={!!props.allowMultipleSelections}
           hideSelectedOptions={false}
         />
         {error && <span>{error}</span>}

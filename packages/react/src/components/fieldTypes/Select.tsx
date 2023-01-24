@@ -43,7 +43,7 @@ const FormSelecSelect: React.FC<Props> = ({
     // console.log('currentValue', currentValue);
 
     if (node) {
-      node.current.setAttribute("value", currValue.toString());
+      node.current.setAttribute("value", currValue ? currValue.toString() : '');
       node.current.dispatchEvent(new Event("change", { bubbles: true }));
 
       registerField({
@@ -122,9 +122,9 @@ const FormSelecSelect: React.FC<Props> = ({
         id={alias}
         ref={node}
         required={required}
-        defaultValue={currValue.toString()}
+        defaultValue={currValue ? currValue.toString() : ''}
         pattern={pattern}
-        aria-label={!props.allowMultipleSelections ? Object.values(preValues)[currValue] : multiValues.toString()}
+        aria-label={!props.allowMultipleSelections ? Object.values(preValues)[currValue] : (multiValues ? multiValues.toString() : '')}
         style={{ visibility: 'hidden', height: 0, width: 0, position: 'absolute', zIndex: -1 }}
       />
         <Select

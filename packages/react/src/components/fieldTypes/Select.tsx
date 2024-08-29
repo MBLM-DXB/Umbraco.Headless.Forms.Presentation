@@ -87,7 +87,6 @@ const FormSelecSelect: React.FC<Props> = ({
   }
 
   const handleSelectChange = (value: SingleValue<KeyValue>) => {
-    console.log('value', currValue);
 
 
     if (props.allowMultipleSelections !== "False" && props.allowMultipleSelections) {
@@ -102,7 +101,9 @@ const FormSelecSelect: React.FC<Props> = ({
       }
     }
     else if (typeof preValues === 'object' && Array.isArray(preValues) === false) {
-      setCurrValue(Object.values(preValues).indexOf(value?.label))
+    console.log(value?.label);
+      // setCurrValue(Object.values(preValues).indexOf(value?.label)) // old, before umbraco update
+      setCurrValue(value?.label)
     } else setCurrValue(value?.label)
   }
 

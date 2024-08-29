@@ -38,7 +38,6 @@ const FormSelecSelect: React.FC<Props> = ({
   const [currValue, setCurrValue] = React.useState('')
   const [multiValues, setMultiValues] = React.useState('')
 
-
   React.useEffect(() => {
     // console.log('currentValue', currentValue);
 
@@ -91,7 +90,7 @@ const FormSelecSelect: React.FC<Props> = ({
     console.log('value', currValue);
 
 
-    if (!!props.allowMultipleSelections) {
+    if (props.allowMultipleSelections !== "False" && props.allowMultipleSelections) {
       if (typeof preValues === 'object' && Array.isArray(preValues) === false) {
         const values = value.map((item: any) => Object.values(preValues).indexOf(item?.label))
         setCurrValue(values[0])
@@ -124,19 +123,19 @@ const FormSelecSelect: React.FC<Props> = ({
         required={required}
         defaultValue={currValue ? currValue.toString() : ''}
         pattern={pattern}
-        aria-label={!props.allowMultipleSelections ? Object.values(preValues)[currValue] : (multiValues ? multiValues.toString() : '')}
+        aria-label={props.allowMultipleSelections === "False" || props.allowMultipleSelections === "" ? Object.values(preValues)[currValue] : (multiValues ? multiValues.toString() : '')}
         style={{ visibility: 'hidden', height: 0, width: 0, position: 'absolute', zIndex: -1 }}
       />
         <Select
           placeholder={helpText}
-          classNamePrefix={!props.allowMultipleSelections ? "dropdown" : "dropdown-multi"}
+          classNamePrefix={props.allowMultipleSelections === "False" || props.allowMultipleSelections === "" ? "dropdown" : "dropdown-multi"}
           onMenuOpen={() => setIsOpen(true)}
           onMenuClose={() => setIsOpen(false)}
           onChange={(value: SingleValue<{ label: string; value: string }>) => {
             handleSelectChange(value)
           }}
           options={handleOptionsList(preValues)}
-          isMulti={!!props.allowMultipleSelections}
+          isMulti={props.allowMultipleSelections !== "False" && props.allowMultipleSelections}
           hideSelectedOptions={false}
         />
         {error && <span>{error}</span>}

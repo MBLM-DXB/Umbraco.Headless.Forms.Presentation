@@ -22,6 +22,12 @@ const Select: React.FC<Props> = ({
   required,
 }) => {
   //const ref = useRef<HTMLSelectElement>(null)
+  let preValuesClone = preValues
+
+  if (typeof preValues && preValues.constructor === Object) {
+    preValuesClone = Object.values(preValues)
+  }
+
   const { currentValue, error, registerField } = useField(alias)
   helpText = helpText || "Please select a value";
   const ref = useCallback(
@@ -67,10 +73,10 @@ const Select: React.FC<Props> = ({
           defaultValue={currentValue as string}
           ref={ref}
           required={required}
-          aria-label={Object.values(preValues)[currentValue]}
+          aria-label={Object.values(preValuesClone)[currentValue]}
         >
           <option>{helpText}</option>
-          {renderOptions(preValues)}
+          {renderOptions(preValuesClone)}
         </select>
         {error && <span>{error}</span>}
       </div>
